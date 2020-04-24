@@ -40,4 +40,6 @@ license the author originally released it under. Check the
 All of the _assets_ (in the `assets` folder) are from
 [Kenney](https://kenney.nl/) and are released under the
 [CC0 1.0 Universal](https://creativecommons.org/publicdomain/zero/1.0/)
-license because Kenney wants us to be happy.
+license because Kenney wants us to be happy. These are from:
+
+* [Roguelike/RPG Pack](https://kenney.nl/assets/roguelike-rpg-pack)
