@@ -2,8 +2,8 @@
 stds.howtorpg = {
     globals = {
         "gameMap",
-        "gameState",
-        "gameTextures"
+        "gameQuads",
+        "gameState"
     }
 }
 

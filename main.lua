@@ -15,13 +15,16 @@ gameMap = {
 }
 
 gameState = {
+    -- Texture atlas:
+    atlas = nil,
+
     -- Render size:
     gameWidth = 128,
     gameHeight = 112,
 
-    -- Number of tiles visible (calculated at runtime):
-    tileWidth = 0,
-    tileHeight = 0,
+    -- Number of tiles visible:
+    tileWidth = 16,
+    tileHeight = 16,
 
     tilesPerRow = 0,
     tilesPerColumn = 0,
@@ -31,7 +34,7 @@ gameState = {
     mapHeight = 7
 }
 
-gameTextures = {
+gameQuads = {
     -- Filled during love.load().
 }
 
@@ -53,21 +56,12 @@ function love.load()
 
     math.randomseed(os.time())
 
-    gameTextures = {
-        love.graphics.newImage('assets/tiles_00.png'),
-        love.graphics.newImage('assets/tiles_01.png'),
-        love.graphics.newImage('assets/tiles_02.png'),
-        love.graphics.newImage('assets/tiles_03.png'),
-        love.graphics.newImage('assets/tiles_04.png'),
-        love.graphics.newImage('assets/tiles_05.png'),
-        love.graphics.newImage('assets/tiles_06.png'),
-        love.graphics.newImage('assets/tiles_07.png'),
-        love.graphics.newImage('assets/tiles_08.png'),
-        love.graphics.newImage('assets/tiles_09.png'),
-        love.graphics.newImage('assets/tiles_10.png')
-    }
-    gameState.tileWidth = gameTextures[1]:getWidth()
-    gameState.tileHeight = gameTextures[1]:getHeight()
+    gameState.atlas = love.graphics.newImage('assets/atlas.png')
+    local atlas_width, atlas_height = gameState.atlas:getWidth(), gameState.atlas:getHeight()
+    for i = 0, 10 do
+        gameQuads[i + 1] = love.graphics.newQuad(i * gameState.tileWidth, 0, gameState.tileWidth, gameState.tileHeight,
+            atlas_width, atlas_height)
+    end
 
     -- Calculate the number of tiles we can draw in a row based on the tile
     -- size.
@@ -81,7 +75,7 @@ function love.draw()
     love.graphics.setColor(1, 1, 1, 1)
     for j = 0, gameState.tilesPerColumn - 1 do
         for i = 0, gameState.tilesPerRow - 1 do
-            love.graphics.draw(gameTextures[gameMap[j * gameState.mapWidth + i + 1]],
+            love.graphics.draw(gameState.atlas, gameQuads[gameMap[j * gameState.mapWidth + i + 1]],
                 i * gameState.tileWidth, j * gameState.tileHeight)
         end
     end
