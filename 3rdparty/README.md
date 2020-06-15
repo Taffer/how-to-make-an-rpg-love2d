@@ -5,4 +5,4 @@ by the licenses specified by those folks.
 
 ## Credits
 
-(No 3rd party code yet.)
+* `push` by [Ulydev](https://github.com/Ulydev) - Resolution handling library.

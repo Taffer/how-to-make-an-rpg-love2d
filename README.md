@@ -7,6 +7,10 @@ Dan's book is good (I'm still reading though), but it's using a custom game
 engine... I'm porting it to [Love2D](https://love2d.org/) so I can get better
 at Love2D for my own games.
 
+**Note:** This repo is using `git` submodules for the `3rdparty` code; use
+`git clone --recursive` when cloning, or `git submodule update --init
+--recursive` if you've already cloned the repo without submodules.
+
 ## Organization
 
 The code from "How To Make An RPG" is split up into a lot (a _lot_) of
