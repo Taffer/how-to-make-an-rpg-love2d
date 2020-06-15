@@ -44,7 +44,11 @@ function love.draw()
     push:start()
 
     love.graphics.setColor(1, 1, 1, 1)
-    love.graphics.draw(gameState.grass)
+    for j = 0, gameState.tilesPerColumn - 1 do
+        for i = 0, gameState.tilesPerRow - 1 do
+            love.graphics.draw(gameState.grass, i * gameState.grass:getWidth(), j * gameState.grass:getHeight())
+        end
+    end
 
     local y = 32
     local x = 32
