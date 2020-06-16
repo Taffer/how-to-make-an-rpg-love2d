@@ -24,6 +24,8 @@ gameState = {
     tilesPerRow = 0,
     tilesPerColumn = 0,
 
+    batch = nil,
+
     -- Map constants.
     mapWidth = map.width,
     mapHeight = map.height
@@ -58,18 +60,22 @@ function love.load()
     -- size.
     gameState.tilesPerRow = math.floor(gameState.gameWidth / map.tilewidth)
     gameState.tilesPerColumn = math.floor(gameState.gameHeight / map.tileheight)
+
+    gameState.batch = love.graphics.newSpriteBatch(gameState.atlas, gameState.tilesPerRow * gameState.tilesPerColumn)
 end
 
 function love.draw()
     push:start()
 
     love.graphics.setColor(1, 1, 1, 1)
+    gameState.batch:clear()
     for j = 0, gameState.tilesPerColumn - 1 do
         for i = 0, gameState.tilesPerRow - 1 do
-            love.graphics.draw(gameState.atlas, gameQuads[gameMap[j * gameState.mapWidth + i + 1]],
-                i * map.tilewidth, j * map.tileheight)
+            gameState.batch:add(gameQuads[gameMap[j * gameState.mapWidth + i + 1]], i * map.tilewidth, j * map.tileheight)
         end
     end
+    gameState.batch:flush()
+    love.graphics.draw(gameState.batch)
 
     push:finish()
 end
