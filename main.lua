@@ -92,6 +92,17 @@ function love.draw()
         love.graphics.draw(gameState.batch)
     end
 
+    -- Draw the mouse position, showing tile co-ordinates.
+    local x, y = love.mouse.getPosition()
+    x, y = push:toGame(x, y)
+    if x ~= nil and y ~= nil then
+        -- We're on-screen.
+        local tile_x = math.floor(x / map.tilewidth) + 1
+        local tile_y = math.floor(y / map.tileheight) + 1
+
+        love.graphics.print('X:' .. tile_x .. ' Y:' .. tile_y, x, y)
+    end
+
     push:finish()
 end
 
