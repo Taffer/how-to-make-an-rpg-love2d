@@ -10,15 +10,17 @@ local push = require "3rdparty.push.push"
 local map = require 'assets.map'
 
 -- Horrible, horrible globals.
-gameMap = map.layers[1].data
-
 gameState = {
     -- Texture atlas:
     atlas = love.graphics.newImage('assets/' .. map.tilesets[1].image),
+    quads = {
+        -- Filled during love.load(). These are similar to the UVs used by the
+        -- original code.
+    },
 
     -- Render size (half the size of the window):
-    gameWidth = 128,
-    gameHeight = 112,
+    gameWidth = 736,
+    gameHeight = 480,
 
     -- Calculated at runtime based on window size.
     tilesPerRow = 0,
@@ -29,11 +31,6 @@ gameState = {
     -- Map constants.
     mapWidth = map.width,
     mapHeight = map.height
-}
-
-gameQuads = {
-    -- Filled during love.load(). These are similar to the UVs used by the
-    -- original code.
 }
 
 -- Love callbacks.
@@ -51,9 +48,18 @@ function love.load()
 
     math.randomseed(os.time())
 
-    for i = 0, 10 do
-        gameQuads[i + 1] = love.graphics.newQuad(i * map.tilewidth, 0, map.tilewidth, map.tileheight,
-            map.tilesets[1].imagewidth, map.tilesets[1].imageheight)
+    local tile_width = map.tilesets[1].tilewidth
+    local tile_height = map.tilesets[1].tileheight
+    local atlas_width = map.tilesets[1].imagewidth
+    local atlas_height = map.tilesets[1].imageheight
+    local tile_spacing = map.tilesets[1].spacing
+    for y = 0, (map.tilesets[1].imageheight / map.tilesets[1].tileheight) - 1 do
+        for x = 0, map.tilesets[1].columns - 1 do
+            local atlas_x = x * tile_width + x * tile_spacing
+            local atlas_y = y * tile_height + y * tile_spacing
+            gameState.quads[x + y * map.tilesets[1].columns + 1] = love.graphics.newQuad(atlas_x, atlas_y, tile_width, tile_height,
+                atlas_width, atlas_height)
+        end
     end
 
     -- Calculate the number of tiles we can draw in a row based on the tile
@@ -61,21 +67,30 @@ function love.load()
     gameState.tilesPerRow = math.floor(gameState.gameWidth / map.tilewidth)
     gameState.tilesPerColumn = math.floor(gameState.gameHeight / map.tileheight)
 
-    gameState.batch = love.graphics.newSpriteBatch(gameState.atlas, gameState.tilesPerRow * gameState.tilesPerColumn)
+    gameState.batch = love.graphics.newSpriteBatch(gameState.atlas, gameState.tilesPerRow * gameState.tilesPerColumn * 2)
 end
 
 function love.draw()
     push:start()
 
+    love.graphics.clear(0, 0, 0, 1)
     love.graphics.setColor(1, 1, 1, 1)
-    gameState.batch:clear()
-    for j = 0, gameState.tilesPerColumn - 1 do
-        for i = 0, gameState.tilesPerRow - 1 do
-            gameState.batch:add(gameQuads[gameMap[j * gameState.mapWidth + i + 1]], i * map.tilewidth, j * map.tileheight)
+
+    -- Layer 1 is base textures, layer 2 is the items on top (roads, etc.).
+    for layer = 1, 2 do
+        local gameMap = map.layers[layer].data
+        gameState.batch:clear()
+        for y = 0, gameState.tilesPerColumn - 1 do
+            for x = 0, gameState.tilesPerRow - 1 do
+                local quad = gameMap[x + y * map.width + 1]
+                if quad > 0 then
+                    gameState.batch:add(gameState.quads[quad], x * map.tilewidth, y * map.tileheight)
+                end
+            end
         end
+        gameState.batch:flush()
+        love.graphics.draw(gameState.batch)
     end
-    gameState.batch:flush()
-    love.graphics.draw(gameState.batch)
 
     push:finish()
 end

@@ -1,8 +1,6 @@
 -- Settings that seem reasonable.
 stds.howtorpg = {
     globals = {
-        "gameMap",
-        "gameQuads",
         "gameState"
     }
 }
