@@ -100,6 +100,10 @@ function love.draw()
         local tile_x = math.floor(x / map.tilewidth) + 1
         local tile_y = math.floor(y / map.tileheight) + 1
 
+        love.graphics.setColor(1, 0, 0, 1)
+        love.graphics.rectangle("fill", x, y, 2, 2)
+
+        love.graphics.setColor(1, 1, 1, 1)
         love.graphics.print('X:' .. tile_x .. ' Y:' .. tile_y, x, y)
     end
 
