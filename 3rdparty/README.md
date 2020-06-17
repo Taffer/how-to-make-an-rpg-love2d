@@ -5,4 +5,5 @@ by the licenses specified by those folks.
 
 ## Credits
 
+* `middleclass` by [kikito](https://github.com/kikito) - Simple class framework.
 * `push` by [Ulydev](https://github.com/Ulydev) - Resolution handling library.
