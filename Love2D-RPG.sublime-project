@@ -10,7 +10,7 @@
     [
         {
             "name": "Launch Love2d",
-            "shell_cmd": "love .",
+            "shell_cmd": "/usr/bin/love .",
             "file_regex": "^Error: (?:[^:]+: )?([^: ]+?):(\\d+):() ([^:]*)$",
         },
     ],
