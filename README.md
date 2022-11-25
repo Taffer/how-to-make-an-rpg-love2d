@@ -1,3 +1,11 @@
+# Moved
+
+This repo is has been replaced by: https://codeberg.org/Taffer/how-to-make-an-rpg-love2d
+
+![Logo of the GiveUpGitHub campaign](https://sfconservancy.org/img/GiveUpGitHub.png)
+
+Everything in this repo should be considered out of date.
+
 # Love2D - How To Make An RPG
 
 [Dan Schuller's "How To Make An RPG"](https://howtomakeanrpg.com/) code,
